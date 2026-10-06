@@ -1,4 +1,5 @@
 # Gridlock Syndicate — Three-stage campaign
+![Gridlock Syndicate gameplay](gridlock-cover.png)
 
 Raw HTML, CSS Grid and vanilla JavaScript. This package upgrades the frontend AND
 the authoritative Cloudflare Worker. Do not replace only the two browser files.
