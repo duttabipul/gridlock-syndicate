@@ -1,0 +1,9 @@
+{
+  "name": "gridlock-syndicate",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-05",
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
+  "durable_objects": { "bindings": [{ "name": "ROOMS", "class_name": "Room" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Room"] }],
+  "vars": { "ALLOWED_ORIGINS": "" }
+}

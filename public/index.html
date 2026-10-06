@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Gridlock Syndicate — Landing & Lobby</title>
+<style>
+:root{--bg:#0c1013;--surface:#141b20;--raised:#1c262d;--ink:#edf2ef;--muted:#a9b7ba;--line:#35444b;--signal:#d4f36b;--signal-ink:#142000;--warning:#ffcd80;--danger:#ff9292;--radius:12px;--space:clamp(20px,4vw,48px);font-family:Inter,Segoe UI,Arial,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);line-height:1.55}a{color:var(--signal);text-underline-offset:4px}button,input{font:inherit}button,a,input{touch-action:manipulation}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--signal);outline-offset:4px}button{min-height:48px;border-radius:8px;border:1px solid var(--line);padding:12px 18px;color:var(--ink);background:var(--raised);font-weight:650}button:disabled{cursor:not-allowed;background:#273230;color:#bac8bf;border-color:#526158}input{display:block;width:100%;min-width:0;padding:13px 14px;background:var(--bg);border:1px solid #5b6e77;border-radius:8px;color:var(--ink);min-height:48px;font-size:1rem}input::placeholder{color:#91a0a5}label{display:block;margin-bottom:7px;font-weight:600}h1,h2,h3,p{margin-top:0}h1{font-size:clamp(2.5rem,7vw,5rem);line-height:1.04;letter-spacing:-.055em;margin-bottom:22px}h2{font-size:1.5rem;letter-spacing:-.025em}h3{font-size:1.1rem}p{color:var(--muted)}.shell{max-width:1180px;margin:auto;padding:0 var(--space)}.topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:24px 0;border-bottom:1px solid var(--line)}.brand{font-weight:750;letter-spacing:.06em;font-size:.9rem}.mark{color:var(--signal);margin-right:10px}.meta,.eyebrow{font: .8rem ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}nav{display:flex;gap:20px;flex-wrap:wrap}.preview-note{margin:22px 0;padding:12px 16px;border-left:3px solid var(--warning);background:var(--surface);font-size:.9rem;color:var(--warning)}.landing{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(24px,5vw,64px);padding:36px 0 52px;align-items:start}.eyebrow{color:var(--signal);margin-bottom:18px}.lead{font-size:1.13rem;max-width:40ch}.facts{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0}.facts span{border:1px solid var(--line);border-radius:30px;padding:7px 12px;font-size:.85rem}.panel{border:1px solid var(--line);background:var(--surface);border-radius:var(--radius);padding:clamp(20px,3vw,28px)}.field{margin-bottom:20px}.hint{font-size:.85rem;margin:8px 0 0}.full{width:100%}.separator{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.85rem;margin:24px 0}.separator:before,.separator:after{content:'';height:1px;background:var(--line);flex:1}.join-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px}.code-input{text-transform:uppercase;letter-spacing:.2em;font-family:ui-monospace,monospace}.rules{margin:26px 0 0;padding-left:22px;color:var(--muted)}.rules li{padding:6px 0}.rules strong{color:var(--ink)}.section-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:20px}.lobby{border-top:1px solid var(--line);padding:42px 0 50px;scroll-margin-top:20px}.lobby-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px}.room-head{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center}.room-code{font:clamp(2rem,6vw,3rem) ui-monospace,monospace;letter-spacing:.16em;display:block;margin-top:8px;color:var(--signal)}.players{list-style:none;padding:0;margin:24px 0}.player{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding:18px 0;border-top:1px solid var(--line)}.avatar{width:44px;height:44px;background:var(--raised);border:1px solid var(--line);border-radius:8px;display:grid;place-items:center;color:var(--signal);font-family:ui-monospace,monospace}.player strong{display:block;overflow-wrap:anywhere}.player p{margin:4px 0 0;font-size:.9rem}.status{font-size:.8rem;color:var(--warning)}.role{padding:0 0 20px;margin:0 0 20px;border-bottom:1px solid var(--line)}.role:last-of-type{border:0;margin-bottom:0}.role p{margin-bottom:0}.footer{border-top:1px solid var(--line);padding:22px 0 32px;color:var(--muted);font-size:.85rem}.skip{position:absolute;left:16px;top:-100px;background:var(--bg);padding:12px;z-index:3}.skip:focus{top:12px}
+@media(max-width:760px){.landing,.lobby-grid{grid-template-columns:1fr}.landing{padding-top:20px}.topbar{align-items:flex-start}.join-row{grid-template-columns:1fr}.lead{max-width:none}}@media(prefers-reduced-motion:no-preference){button,a,input{transition:background-color .15s,border-color .15s}html{scroll-behavior:smooth}}
+[hidden]{display:none!important}button:not(:disabled){cursor:pointer}#create-room{background:var(--signal);color:var(--signal-ink)}button:not(:disabled):hover{filter:brightness(1.12)}
+
+/* Phase III: shared mission shell and role-specific controls */
+#gameplay{margin:32px 0;scroll-margin-top:20px}
+.mission-bar{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+#mission-timer{font:2rem ui-monospace,monospace;color:var(--signal);font-variant-numeric:tabular-nums}
+#mission-timer.urgent{color:var(--danger)}
+.game-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(220px,1fr);gap:28px;align-items:center}
+#game-grid{display:grid;grid-template-columns:repeat(var(--grid-size,5),minmax(0,1fr));gap:clamp(2px,1vw,6px);aspect-ratio:1;width:100%;max-width:480px;background:#080c10;padding:8px;border:1px solid var(--line);border-radius:10px}
+.cell{position:relative;display:grid;place-items:center;min-width:0;border:1px solid #35444b;background:#18232c;border-radius:5px;color:var(--ink)}
+.cell .coord{position:absolute;top:3px;left:4px;font:10px ui-monospace,monospace;color:#a9b7ba}
+.cell .symbol{font-size:clamp(16px,4vw,27px);z-index:1}
+.cell.obstacle{background:#551c28;border-color:#ff717f}
+.cell.key{color:#ffe077;background:#39331c}
+.cell.exit{border:2px dashed var(--signal);color:var(--signal)}
+.cell .tracker{position:absolute;inset:20%;background:#79f7a7;border-radius:5px;box-shadow:0 0 14px #79f7a780;z-index:2;color:#092116;display:grid;place-items:center;font-weight:800}
+#game-grid.blind{display:grid;grid-template-columns:1fr;place-items:center;background:#000;border-color:#31383b;text-align:center;padding:24px}
+.blind-label{color:#a9b7ba;font:clamp(.85rem,2vw,1.1rem) ui-monospace,monospace;letter-spacing:.06em;max-width:26ch}
+#controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:360px;margin:20px auto}
+#controls button{min-height:76px;padding:10px 5px;display:grid;place-items:center;gap:4px;font-size:.85rem}
+#controls button span{font-size:1.6rem;line-height:1}
+#controls [data-dir="North"]{grid-column:2;grid-row:1}
+#controls [data-dir="West"]{grid-column:1;grid-row:2}
+#controls [data-dir="South"]{grid-column:2;grid-row:2}
+#controls [data-dir="East"]{grid-column:3;grid-row:2}
+#controls button:not(:disabled):active,#controls button.tapped{background:var(--signal);color:var(--signal-ink);box-shadow:0 0 22px var(--signal)}
+#game-feedback{min-height:3em;color:var(--signal)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem;margin:12px 0}
+#outcome{border-top:1px solid var(--line);padding-top:22px;margin-top:24px}
+#outcome h2{color:var(--signal)}
+#outcome.loss h2{color:var(--danger)}
+#mission-link{color:var(--warning)}
+@media(max-width:760px){.game-layout{grid-template-columns:1fr}#game-grid{margin:auto}#controls{width:100%}}
+@media(prefers-reduced-motion:no-preference){.tracker{animation:track-pulse 1.6s ease-in-out infinite}.obstacle{animation:barrier-pulse 2.2s ease-in-out infinite}.exit{animation:hatch-pulse 2.4s ease-in-out infinite}}
+@keyframes track-pulse{50%{box-shadow:0 0 22px #79f7a7cc}}
+@keyframes barrier-pulse{50%{background:#82313e}}
+@keyframes hatch-pulse{50%{border-color:#74883c;background:#26301d}}
+body{transition:background-color .6s ease}#gameplay,.panel{transition:border-color .6s,background-color .6s}
+body[data-stage="1"]{--surface:#101023;--raised:#221431;--line:#754489;--warning:#f0b8ff}
+body[data-stage="2"]{--surface:#211311;--raised:#32201a;--line:#8d4830;--warning:#ffc16c}
+.cell{aspect-ratio:1}.cell .symbol{font-size:clamp(12px,2.5vw,24px)}
+#leaderboard{margin:24px 0}#leaderboard-list,#stage-scorecard{padding-left:24px;color:var(--ink)}
+#leaderboard-list li,#stage-scorecard li{padding:8px 0;overflow-wrap:anywhere}
+@media(prefers-reduced-motion:no-preference){.stage-enter{animation:stage-enter .5s ease}body[data-stage="2"] #mission-timer{animation:heat-pulse 1.8s ease-in-out infinite}}
+@keyframes stage-enter{from{opacity:.25;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes heat-pulse{50%{text-shadow:0 0 14px #ffb000}}
+@media(prefers-reduced-motion:reduce){body,#gameplay,.panel{transition:none}}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="shell">
+<header class="topbar"><div class="brand"><span class="mark" aria-hidden="true">▦</span>GRIDLOCK SYNDICATE</div><nav aria-label="Navigation"><a href="#main">Entry</a><a href="#lobby">Lobby</a></nav></header>
+<p id="connection-status" class="preview-note" role="status" aria-live="polite">Connecting to room service…</p><noscript>Enable JavaScript to create or join a room.</noscript>
+<main id="main">
+<section class="landing" aria-labelledby="title">
+<div><p class="eyebrow">Two agents. Three escalating stages.</p><h1 id="title">You see the route.<br>They make the move.</h1><p class="lead">Clear Green Terminal (5×5, 60s), Cyberpunk Subversives (7×7, 45s), then Meltdown Threat (9×9, 30s). Each hatch leads straight into the next stage.</p><div class="facts" aria-label="Game details"><span>2 players</span><span>3 stages</span><span>Voice coordination</span></div><h2>How the campaign works</h2><ol class="rules"><li><strong>Create or join a room.</strong> Share the four-character code with your partner. Completed campaigns publish both callsigns to this server's scoreboard; avoid real names if you prefer.</li><li><strong>Establish voice contact.</strong> Play within speaking distance or use a separate voice call. Voice is not built in.</li><li><strong>Navigate together.</strong> The host sees the map, barriers, key and exit. The Operator sees only movement controls.</li><li><strong>Clear all three stages.</strong> Collect each key before its hatch. A timeout fails the entire campaign. Bank unused seconds from every cleared stage: Gold above 60s, Silver above 30s, Bronze for completion.</li></ol></div>
+<section class="panel" aria-labelledby="entry-title"><p class="eyebrow">Crew access</p><h2 id="entry-title">Enter the operation</h2>
+<form aria-describedby="entry-note">
+<div class="field"><label for="operator-name">Operator name</label><input id="operator-name" name="operatorName" type="text" maxlength="24" autocomplete="nickname" placeholder="Choose a callsign" required aria-describedby="name-hint"><p id="name-hint" class="hint">Use a nickname. No account needed.</p></div>
+<button id="create-room" type="button" class="full">Create room — Navigator</button><div class="separator">or join your partner</div>
+<label for="room-code">Room code</label><div class="join-row"><input id="room-code" class="code-input" name="roomCode" type="text" maxlength="4" minlength="4" pattern="[A-Za-z0-9]{4}" spellcheck="false" autocapitalize="characters" autocomplete="off" placeholder="AB7K" aria-describedby="code-hint"><button id="join-room" type="button">Join room</button></div><p id="code-hint" class="hint">Four letters or numbers from your Navigator.</p><p id="entry-note" class="hint">Two players, separate devices. Keep this tab open to stay connected.</p>
+</form></section>
+</section>
+<section hidden id="lobby" class="lobby" aria-labelledby="lobby-title"><div class="section-head"><div><p class="eyebrow">Connection checkpoint</p><h2 id="lobby-title">Mission lobby</h2></div><span id="seat-status" class="meta" role="status"></span></div><div class="lobby-grid"><section class="panel" aria-label="Room and crew"><div class="room-head"><div><span class="meta">Room code</span><strong class="room-code">AB7K</strong></div><button id="copy-code" type="button" disabled>Copy code</button></div><p class="hint">Share this code with your partner.</p><ul class="players"><li class="player"><span class="avatar" aria-hidden="true">N</span><div><strong>Your callsign <span class="status">· Host</span></strong><p>Navigator · map access only</p></div></li><li class="player"><span class="avatar" aria-hidden="true">?</span><div><strong>Waiting for Operator</strong><p>Share the room code to fill this seat.</p></div></li></ul><button id="start-mission" type="button" class="full" disabled aria-describedby="start-hint">Start mission · waiting for partner</button><p id="start-hint" class="hint">The Navigator starts when both players are connected. Confirm your voice link first.</p><button id="leave-room" type="button" disabled>Leave room</button></section><aside class="panel" aria-labelledby="brief-title"><h2 id="brief-title">Know your role</h2><div class="role"><h3>01 / Navigator</h3><p>You see the grid and your partner’s position. Call out directions; you cannot move them.</p></div><div class="role"><h3>02 / Operator</h3><p>Your map stays hidden. Follow your partner’s voice using North, South, East and West.</p></div><p class="hint">Before starting: confirm you can hear each other and agree on North.</p></aside></div></section>
+
+<section hidden id="gameplay" class="panel" aria-labelledby="mission-title">
+  <header class="mission-bar">
+    <div><p class="eyebrow" id="role-label"></p><h2 id="mission-title">Stage 1 / 3 — Green Terminal</h2><p id="stage-details"></p><p id="campaign-score" class="eyebrow">Banked time: 0.0s</p></div>
+    <div><span class="meta">Time remaining</span><div id="mission-timer" role="timer" aria-label="Time remaining">01:00</div></div>
+  </header>
+  <p id="mission-link" role="status"></p>
+  <div class="game-layout">
+    <div>
+      <div id="game-grid" role="group" aria-label="Mission display"></div>
+      <div id="map-legend" class="legend"><span>● Operator</span><span>× Barrier</span><span>⚿ Key</span><span>▣ Exit</span></div>
+      <p id="coordinate-label" class="hint"></p>
+    </div>
+    <div>
+      <h3 id="control-title">Movement controls</h3>
+      <p id="role-instructions"></p>
+      <div id="controls" role="group" aria-label="Movement controls">
+        <button type="button" data-dir="North" aria-label="Move North" disabled><span aria-hidden="true">↑</span>North</button>
+        <button type="button" data-dir="West" aria-label="Move West" disabled><span aria-hidden="true">←</span>West</button>
+        <button type="button" data-dir="South" aria-label="Move South" disabled><span aria-hidden="true">↓</span>South</button>
+        <button type="button" data-dir="East" aria-label="Move East" disabled><span aria-hidden="true">→</span>East</button>
+      </div>
+      <p id="inventory">Inventory: empty</p>
+      <p id="game-feedback" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+  <div id="outcome" hidden aria-live="polite"><h2 id="outcome-title"></h2><p id="outcome-text"></p><ol id="stage-scorecard"></ol><button id="rematch" type="button">Restart campaign · return to lobby</button></div>
+  <button id="exit-mission" type="button">Leave room</button>
+</section>
+
+<section id="leaderboard" class="panel" aria-labelledby="leaderboard-title"><h2 id="leaderboard-title">Global campaign scoreboard</h2><p>Completed campaigns on this server. Higher banked time ranks first. Crew callsigns are public here.</p><button type="button" id="refresh-leaderboard">Refresh leaderboard</button><p id="leaderboard-status" role="status">Gold: more than 60s · Silver: more than 30s · Bronze: completion.</p><ol id="leaderboard-list"></ol></section>
+</main><footer class="footer">Gridlock Syndicate · Three-stage campaign · HTML + CSS Grid</footer>
+</div>
+<script src="lobby.js" defer></script>
+</body>
+</html>
